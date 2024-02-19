@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import twitter from "./helpers/twitter";
+// import twitter from "./helpers/twitter";
 import {
   DEVPOOL_OWNER_NAME,
   DEVPOOL_REPO_NAME,
@@ -9,7 +9,7 @@ import {
   getIssueByLabel,
   getProjectUrls,
   getRepoCredentials,
-  getSocialMediaText,
+  // getSocialMediaText,
   GitHubIssue,
   GitHubLabel,
   checkIfForked,
@@ -36,7 +36,7 @@ async function main() {
     // aggregate all project issues
     const allProjectIssues: GitHubIssue[] = [];
 
-    const isFork = await checkIfForked();
+    const isFork = await checkIfForked(DEVPOOL_OWNER_NAME);
 
     // for each project URL
     for (const projectUrl of projectUrls) {
@@ -121,8 +121,8 @@ async function main() {
           console.log(`Created: ${createdIssue.data.html_url} (${projectIssue.html_url})`);
 
           // post to social media
-          const socialMediaText = getSocialMediaText(createdIssue.data);
-          await twitter.postTweet(socialMediaText);
+          // const socialMediaText = getSocialMediaText(createdIssue.data);
+          // await twitter.postTweet(socialMediaText);
         }
       }
     }

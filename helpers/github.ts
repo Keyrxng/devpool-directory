@@ -18,7 +18,7 @@ export const projects = _projects as {
   category?: Record<string, string>;
 };
 
-export const DEVPOOL_OWNER_NAME = "ubiquity";
+export const DEVPOOL_OWNER_NAME = "keyrxng";
 export const DEVPOOL_REPO_NAME = "devpool-directory";
 export enum LABELS {
   PRICE = "Price",
@@ -66,16 +66,8 @@ export async function forceCloseMissingIssues(devpoolIssues: GitHubIssue[], proj
  * Stops forks from spamming real Ubiquity issues with links to their forks
  * @returns true if the authenticated user is Ubiquity
  */
-export async function checkIfForked() {
-  try {
-    const {
-      data: { id },
-    } = await octokit.users.getAuthenticated();
-    return id !== 76412717;
-  } catch (e: unknown) {
-    console.warn(`Getting authenticated user failed: ${e}`);
-    return false;
-  }
+export async function checkIfForked(user: string) {
+  return user !== "ubiquity";
 }
 
 /**

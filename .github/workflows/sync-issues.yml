@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - development
+      - temp0
   schedule:
     - cron: "15 * * * *" # every hour at minute 15 (github recommends to set such cron jobs not at the start of an hour)
 
