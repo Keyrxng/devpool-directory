@@ -38,21 +38,21 @@ type StateChanges<T extends string = "open" | "closed"> = {
  */
 async function main() {
   let twitterMap: { [key: string]: string } = {};
-  try {
-    twitterMap = JSON.parse(await readFile("./twitterMap.json", "utf8"));
-  } catch (error) {
-    console.log("Couldnt find twitter map artifact, creating a new one");
-    await writeFile("./twitterMap.json", JSON.stringify({}));
-  }
+  // try {
+  //   twitterMap = JSON.parse(await readFile("./twitterMap.json", "utf8"));
+  // } catch (error) {
+  //   console.log("Couldnt find twitter map artifact, creating a new one");
+  //   await writeFile("./twitterMap.json", JSON.stringify({}));
+  // }
 
   // get devpool issues
   const devpoolIssues: GitHubIssue[] = await getAllIssues(DEVPOOL_OWNER_NAME, DEVPOOL_REPO_NAME);
 
   // Calculate total rewards from open issues
-  const { rewards, tasks } = await calculateStatistics(devpoolIssues);
-  const statistics: Statistics = { rewards, tasks };
+  // const { rewards, tasks } = await calculateStatistics(devpoolIssues);
+  // const statistics: Statistics = { rewards, tasks };
 
-  await writeTotalRewardsToGithub(statistics);
+  // await writeTotalRewardsToGithub(statistics);
 
   // aggregate projects.urls and opt settings
   const projectUrls = await getProjectUrls();
@@ -121,11 +121,11 @@ async function createDevPoolIssue(projectIssue: GitHubIssue, projectUrl: string,
   console.log(`Created: ${createdIssue.data.html_url} (${projectIssue.html_url})`);
 
   // post to social media
-  const socialMediaText = getSocialMediaText(createdIssue.data);
-  const tweetId = await twitter.postTweet(socialMediaText);
+  // const socialMediaText = getSocialMediaText(createdIssue.data);
+  // const tweetId = await twitter.postTweet(socialMediaText);
 
-  twitterMap[createdIssue.data.node_id] = tweetId?.id ?? "";
-  await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
+  // twitterMap[createdIssue.data.node_id] = tweetId?.id ?? "";
+  // await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
 }
 
 async function handleDevPoolIssue(
@@ -137,11 +137,11 @@ async function handleDevPoolIssue(
   twitterMap: { [key: string]: string },
   isFork: boolean
 ) {
-  if (projectIssue.state == "closed" && twitterMap[devpoolIssue.node_id]) {
-    await twitter.deleteTweet(twitterMap[devpoolIssue.node_id]);
-    delete twitterMap[devpoolIssue.node_id];
-    await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
-  }
+  // if (projectIssue.state == "closed" && twitterMap[devpoolIssue.node_id]) {
+  //   await twitter.deleteTweet(twitterMap[devpoolIssue.node_id]);
+  //   delete twitterMap[devpoolIssue.node_id];
+  //   await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
+  // }
 
   const metaChanges = {
     // the title of the issue has changed
