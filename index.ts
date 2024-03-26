@@ -30,22 +30,22 @@ dotenv.config();
  */
 async function main() {
   let twitterMap: { [key: string]: string } = {};
-  try {
-    twitterMap = JSON.parse(await readFile("./twitterMap.json", "utf8"));
-  } catch (error) {
-    console.log("Couldnt find twitter map artifact, creating a new one");
-    await writeFile("./twitterMap.json", JSON.stringify({}));
-  }
+  // try {
+  //   twitterMap = JSON.parse(await readFile("./twitterMap.json", "utf8"));
+  // } catch (error) {
+  //   console.log("Couldnt find twitter map artifact, creating a new one");
+  //   await writeFile("./twitterMap.json", JSON.stringify({}));
+  // }
 
   try {
     // get devpool issues
     const devpoolIssues: GitHubIssue[] = await getAllIssues(DEVPOOL_OWNER_NAME, DEVPOOL_REPO_NAME);
 
     // Calculate total rewards from open issues
-    const { rewards, tasks } = await calculateStatistics(devpoolIssues);
-    const statistics: Statistics = { rewards, tasks };
+    // const { rewards, tasks } = await calculateStatistics(devpoolIssues);
+    // const statistics: Statistics = { rewards, tasks };
 
-    await writeTotalRewardsToGithub(statistics);
+    // await writeTotalRewardsToGithub(statistics);
 
     // aggregate projects.urls and opt settings
     const projectUrls = await getProjectUrls();
@@ -70,13 +70,13 @@ async function main() {
         const body = isFork ? projectIssue.html_url.replace("https://github.com", "https://www.github.com") : projectIssue.html_url;
 
         if (devpoolIssue) {
-          if (projectIssue.state == "closed") {
-            if (twitterMap[devpoolIssue.node_id]) {
-              await twitter.deleteTweet(twitterMap[devpoolIssue.node_id]);
-              delete twitterMap[devpoolIssue.node_id];
-              await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
-            }
-          }
+          // if (projectIssue.state == "closed") {
+          //   if (twitterMap[devpoolIssue.node_id]) {
+          //     await twitter.deleteTweet(twitterMap[devpoolIssue.node_id]);
+          //     delete twitterMap[devpoolIssue.node_id];
+          //     await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
+          //   }
+          // }
 
           // If project issue doesn't have the "Price" label (i.e. it has been removed) then close
           // the devpool issue if it is not already closed, no need to pollute devpool repo with draft issues
@@ -174,11 +174,11 @@ async function main() {
           console.log(`Created: ${createdIssue.data.html_url} (${projectIssue.html_url})`);
 
           // post to social media
-          const socialMediaText = getSocialMediaText(createdIssue.data);
-          const tweetId = await twitter.postTweet(socialMediaText);
+          // const socialMediaText = getSocialMediaText(createdIssue.data);
+          // const tweetId = await twitter.postTweet(socialMediaText);
 
-          twitterMap[createdIssue.data.node_id] = tweetId?.id ?? "";
-          await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
+          // twitterMap[createdIssue.data.node_id] = tweetId?.id ?? "";
+          // await writeFile("./twitterMap.json", JSON.stringify(twitterMap));
         }
       }
     }

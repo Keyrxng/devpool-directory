@@ -12,7 +12,7 @@ export const projects = _projects as {
   category?: Record<string, string>;
 };
 
-export const DEVPOOL_OWNER_NAME = "ubiquity";
+export const DEVPOOL_OWNER_NAME = "keyrxng";
 export const DEVPOOL_REPO_NAME = "devpool-directory";
 export enum LABELS {
   PRICE = "Price",
@@ -36,6 +36,7 @@ export const octokit = new Octokit({ auth: process.env.DEVPOOL_GITHUB_API_TOKEN 
  * @param devpoolIssues all devpool issues array
  * @param projectIssues all partner project issues array
  */
+
 export async function forceCloseMissingIssues(devpoolIssues: GitHubIssue[], projectIssues: GitHubIssue[]) {
   // for all devpool issues
   for (const devpoolIssue of devpoolIssues) {
