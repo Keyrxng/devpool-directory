@@ -28,6 +28,8 @@ export async function newDirectoryIssue(partnerIssue: GitHubIssue, projectUrl: s
       labels: getDirectoryIssueLabelsFromPartnerIssue(partnerIssue),
     });
     console.log(`Created: ${createdIssue.data.html_url} (${partnerIssue.html_url})`);
+    console.log(JSON.stringify(partnerIssue));
+    console.log(JSON.stringify(getDirectoryIssueLabelsFromPartnerIssue(partnerIssue)));
 
     if (!createdIssue) {
       console.log("No new issue to tweet about");
