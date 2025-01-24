@@ -18,6 +18,20 @@ export async function newDirectoryIssue(partnerIssue: GitHubIssue, projectUrl: s
     body = partnerIssue.html_url;
   }
 
+  try {
+    const labelNames = getDirectoryIssueLabelsFromPartnerIssue(partnerIssue);
+    // try to create a new label
+    for (let labelName of labelNames) {
+      await octokit.rest.issues.createLabel({
+        owner: DEVPOOL_OWNER_NAME,
+        repo: DEVPOOL_REPO_NAME,
+        name: labelName,
+      });
+    }
+  } catch (err) {
+    console.log('Failed to create a label:', err);
+  }
+
   // create a new issue
   try {
     const createdIssue = await octokit.rest.issues.create({
