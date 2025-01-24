@@ -18,18 +18,16 @@ export async function newDirectoryIssue(partnerIssue: GitHubIssue, projectUrl: s
     body = partnerIssue.html_url;
   }
 
+  // create a new `id: XXX` label
+  // NOTICE: this is a workaround until https://github.com/octokit/rest.js/issues/479 is solved
   try {
-    const labelNames = getDirectoryIssueLabelsFromPartnerIssue(partnerIssue);
-    // try to create a new label
-    for (let labelName of labelNames) {
-      await octokit.rest.issues.createLabel({
-        owner: DEVPOOL_OWNER_NAME,
-        repo: DEVPOOL_REPO_NAME,
-        name: labelName,
-      });
-    }
+    await octokit.rest.issues.createLabel({
+      owner: DEVPOOL_OWNER_NAME,
+      repo: DEVPOOL_REPO_NAME,
+      name: `id: ${partnerIssue.node_id}`,
+    });
   } catch (err) {
-    console.log('Failed to create a label:', err);
+    console.error("Failed to create a label:", err);
   }
 
   // create a new issue
@@ -42,9 +40,6 @@ export async function newDirectoryIssue(partnerIssue: GitHubIssue, projectUrl: s
       labels: getDirectoryIssueLabelsFromPartnerIssue(partnerIssue),
     });
     console.log(`Created: ${createdIssue.data.html_url} (${partnerIssue.html_url})`);
-    console.log(JSON.stringify(createdIssue.data));
-    console.log(JSON.stringify(partnerIssue));
-    console.log(JSON.stringify(getDirectoryIssueLabelsFromPartnerIssue(partnerIssue)));
 
     if (!createdIssue) {
       console.log("No new issue to tweet about");
