@@ -16,7 +16,7 @@ export async function main() {
   const partnerRepoUrls = await getPartnerRepoUrls();
   const taskList: GitHubIssue[] = [];
   const pullRequestList: GitHubPullRequest[] = [];
-  const partnerAvatarList: OrgNameAndAvatarUrl[] = [];
+  const partnerAvatarMap: Map<string, OrgNameAndAvatarUrl> = new Map();
 
   // for each project URL
   for (const partnerRepoUrl of partnerRepoUrls) {
@@ -29,10 +29,14 @@ export async function main() {
     const pullRequests: GitHubPullRequest[] = await getRepositoryPullRequests(ownerName, repoName);  
     pullRequestList.push(...pullRequests);
 
-    // get partner profile picture
-    const org: OrgNameAndAvatarUrl = await getPartnerAvatars(ownerName);
-    partnerAvatarList.push(org);
+    // get partner profile picture if not already in the map
+    if (!partnerAvatarMap.has(ownerName)) {
+      const org: OrgNameAndAvatarUrl = await getPartnerAvatars(ownerName);
+      partnerAvatarMap.set(ownerName, org);
+    }
   }
+
+  const partnerAvatarList: OrgNameAndAvatarUrl[] = Array.from(partnerAvatarMap.values());
 
   await commitTasks(taskList);
   await commitPullRequests(pullRequestList);
