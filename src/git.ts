@@ -1,4 +1,4 @@
-import { DEVPOOL_OWNER_NAME, DEVPOOL_REPO_NAME, GitHubIssue, GitHubPullRequest, octokit } from "./directory/directory";
+import { DEVPOOL_OWNER_NAME, DEVPOOL_REPO_NAME, GitHubIssue, GitHubPullRequest, octokit, OrgNameAndAvatarUrl } from "./directory/directory";
 import { Statistics } from "./directory/statistics";
 let gitChanges: Array<{ path: string; content: string }> = [];
 
@@ -126,6 +126,14 @@ export async function commitPullRequests(tasks: GitHubPullRequest[]) {
     await gitCommit(tasks, "devpool-pull-requests.json");
   } catch (error) {
     console.error(`Error preparing devpool pull requests for github file: ${error}`);
+  }
+}
+
+export async function commitPartnerProfilePictures(tasks: OrgNameAndAvatarUrl[]) {
+  try {
+    await gitCommit(tasks, "devpool-partner-profile-pictures.json");
+  } catch (error) {
+    console.error(`Error preparing devpool profile pictures for github file: ${error}`);
   }
 }
 
