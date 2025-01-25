@@ -1,13 +1,13 @@
 import { calculateStatistics } from "./directory/calculate-statistics";
 import { DEVPOOL_OWNER_NAME, DEVPOOL_REPO_NAME, GitHubIssue, GitHubPullRequest, OrgNameAndAvatarUrl } from "./directory/directory";
-import { getPartnerProfilePictures } from "./directory/get-partner-profile-pictures";
+import { getPartnerAvatars } from "./directory/get-partner-avatars";
 import { getPartnerUrls as getPartnerRepoUrls } from "./directory/get-partner-urls";
 import { getRepoCredentials } from "./directory/get-repo-credentials";
 import { getRepositoryIssues } from "./directory/get-repository-issues";
 import { getRepositoryPullRequests } from "./directory/get-repository-pull-requests";
 import { Statistics } from "./directory/statistics";
 import { syncPartnerRepoIssues } from "./directory/sync-partner-repo-issues";
-import { commitPartnerProfilePictures, commitPullRequests, commitStatistics, commitTasks } from "./git";
+import { commitPartnerAvatars, commitPullRequests, commitStatistics, commitTasks } from "./git";
 import { initializeTwitterMap, TwitterMap } from "./twitter/initialize-twitter-map";
 
 export async function main() {
@@ -16,7 +16,7 @@ export async function main() {
   const partnerRepoUrls = await getPartnerRepoUrls();
   const taskList: GitHubIssue[] = [];
   const pullRequestList: GitHubPullRequest[] = [];
-  const partnerProfilePicturesList: OrgNameAndAvatarUrl[] = [];
+  const partnerAvatarList: OrgNameAndAvatarUrl[] = [];
 
   // for each project URL
   for (const partnerRepoUrl of partnerRepoUrls) {
@@ -30,13 +30,13 @@ export async function main() {
     pullRequestList.push(...pullRequests);
 
     // get partner profile picture
-    const org: OrgNameAndAvatarUrl = await getPartnerProfilePictures(ownerName);
-    partnerProfilePicturesList.push(org);
+    const org: OrgNameAndAvatarUrl = await getPartnerAvatars(ownerName);
+    partnerAvatarList.push(org);
   }
 
   await commitTasks(taskList);
   await commitPullRequests(pullRequestList);
-  await commitPartnerProfilePictures(partnerProfilePicturesList);
+  await commitPartnerAvatars(partnerAvatarList);
 
   // Calculate total rewards from devpool issues
   const { rewards, tasks } = await calculateStatistics(await getRepositoryIssues(DEVPOOL_OWNER_NAME, DEVPOOL_REPO_NAME));

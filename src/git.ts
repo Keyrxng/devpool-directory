@@ -129,11 +129,11 @@ export async function commitPullRequests(tasks: GitHubPullRequest[]) {
   }
 }
 
-export async function commitPartnerProfilePictures(tasks: OrgNameAndAvatarUrl[]) {
+export async function commitPartnerAvatars(tasks: OrgNameAndAvatarUrl[]) {
   try {
-    await gitCommit(tasks, "devpool-partner-profile-pictures.json");
+    await gitCommit(tasks, "devpool-partner-avatars.json");
   } catch (error) {
-    console.error(`Error preparing devpool profile pictures for github file: ${error}`);
+    console.error(`Error preparing devpool avatars for github file: ${error}`);
   }
 }
 

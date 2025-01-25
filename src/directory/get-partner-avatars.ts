@@ -1,6 +1,6 @@
 import { GitHubOrganization, octokit } from "./directory";
 
-export async function getPartnerProfilePictures(ownerName: string): Promise<{ownerName: string, avatar_url?: string}> {
+export async function getPartnerAvatars(ownerName: string): Promise<{ownerName: string, avatar_url?: string}> {
   const orgResp: GitHubOrganization[] = await octokit.paginate({
     method: "GET",
     url: `/orgs/${ownerName}`
