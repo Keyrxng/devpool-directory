@@ -4,7 +4,7 @@ export async function getPartnerAvatars(ownerName: string): Promise<{ownerName: 
   try {
     const orgResp: GitHubOrganization[] = await octokit.paginate({
       method: "GET",
-      url: `/orgs/${ownerName}`
+      url: `/users/${ownerName}`
     });
 
     const org = orgResp.find((org) => org.login === ownerName);
