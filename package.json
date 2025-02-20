@@ -48,6 +48,7 @@
     "eslint-plugin-sonarjs": "^2.0.3",
     "husky": "^8.0.3",
     "jest-junit": "16.0.0",
+    "jest-md-dashboard": "^0.8.0",
     "knip": "^3.3.0",
     "lint-staged": "^15.1.0",
     "msw": "2.1.7",

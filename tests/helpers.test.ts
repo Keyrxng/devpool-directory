@@ -17,6 +17,10 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+jest.mock("../src/directory/get-repository-issues", () => ({
+  getRepositoryIssues: jest.fn().mockResolvedValue([cfg]),
+}));
+
 describe("GitHub items", () => {
   const githubDevpoolIssueTemplate = cfg as GitHubIssue;
 
@@ -71,10 +75,10 @@ describe("GitHub items", () => {
         ...githubDevpoolIssueTemplate,
         html_url: "https://github.com/owner/repo",
         node_id: "2",
-      },
-      "https://github.com/owner/repo"
+      }
     );
-    expect(res).toMatchObject(["Pricing: 200 USD", "Partner: owner/repo", "id: 2", "Time: 1h"]);
+
+    expect(res).toMatchObject(["id: 2", "Pricing: 200 USD", "Time: 1h"]);
   });
 
   test("Get repo urls", async () => {
